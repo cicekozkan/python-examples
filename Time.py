@@ -12,6 +12,15 @@ class Time(object):
         self.hour = hour
         self.minutes = minutes
         self.seconds = seconds
+    def __str__(self):
+        return '%.2d:%.2d:%.2d' % (self.hour, self.minutes, self.seconds)
+    def __add__(self,other):
+        if isinstance(other,Time):
+            return self.add_time(other)
+        else:
+            return self.increment(other)
+    def __radd__(self,other):
+        return self.__add__(other)
     def print_time(self):
         """Prints the time"""
         print '%.2d:%.2d:%.2d' % (self.hour, self.minutes, self.seconds)
@@ -25,7 +34,15 @@ class Time(object):
         seconds += self.time_to_int()
         return int_to_time(seconds)  
     def is_after(self,other):
-        return self.time_to_int() > other.time_to_int()    
+        return self.time_to_int() > other.time_to_int()
+    def add_time(self, other):
+        """adds given time object"""
+        assert valid_time(self) and valid_time(other)
+        seconds = self.time_to_int() + other.time_to_int()
+        return int_to_time(seconds)
+    def print_attributes(self):
+        for attr in self.__dict__:
+            print attr, getattr(self,attr)
         
 def valid_time(time):
     if time.hour < 0 or time.minutes < 0 or time.seconds < 0:
@@ -34,10 +51,7 @@ def valid_time(time):
         return False
     return True
     
-def add_time(t1, t2):
-    assert valid_time(t1) and valid_time(t2)
-    seconds = time_to_int(t1) + time_to_int(t2)
-    return int_to_time(seconds)
+
         
 def int_to_time(seconds):
     time = Time()
