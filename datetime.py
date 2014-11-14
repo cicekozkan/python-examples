@@ -42,12 +42,17 @@ def double_day(year1,month1,day1,year2,month2,day2):
 def n_day(n,year1,month1,day1,year2,month2,day2):
     """the more general version of double_day that computes the day when one
     person is n times older than the other."""
+    assert n > 1
     bd1=datetime.date(year1,month1,day1)
     bd2=datetime.date(year2,month2,day2)
-    dif = abs(bd1-bd2)
-    if bd1 < bd2:
-        nd = bd2 + dif/((n-1)*365)
-    else: 
-        nd = bd1 + dif/((n-1)*365)
-    
+    oneyear = datetime.date(1,1,1)
+    twoyear = datetime.date(2,1,1)
+    one_age = twoyear - oneyear
+    if (year1<year2):    
+        nyear = (year2-year1)/(n-1)
+        nd = bd2 + nyear*one_age
+    else:
+        nyear = (year1-year2)/(n-1)
+        nd = bd1 +  nyear*one_age
     print 'the n day is %d/%d/%d'%(nd.year, nd.month, nd.day)
+    
