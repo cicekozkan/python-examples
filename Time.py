@@ -21,6 +21,10 @@ class Time(object):
             return self.increment(other)
     def __radd__(self,other):
         return self.__add__(other)
+    def __cmp__(self,other):
+        t1=self.hour, self.minutes, self.seconds
+        t2=other.hour, other.minutes, other.seconds
+        return cmp(t1,t2)
     def print_time(self):
         """Prints the time"""
         print '%.2d:%.2d:%.2d' % (self.hour, self.minutes, self.seconds)
