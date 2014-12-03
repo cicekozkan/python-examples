@@ -29,17 +29,6 @@ class PokerHand(Hand):
         self.ranks = {}
         for card in self.cards:
             self.ranks[card.rank] = self.ranks.get(card.rank, 0) + 1
-
-    def has_flush(self):
-        """Returns True if the hand has a flush, False otherwise.
-      
-        Note that this works correctly for hands with more than 5 cards.
-        """
-        self.suit_hist()
-        for val in self.suits.values():
-            if val >= 5:
-                return True
-        return False
     
     def has_pair(self):
         """Returns True if the hand has a pair, False otherwise.
@@ -68,6 +57,28 @@ class PokerHand(Hand):
             if pair == 2:
                 return True
         return False
+    def has_three_of_a_kind(self):
+        """Returns True if the hand has three cards with the same rank, False otherwise.
+        Note that this works correctly for hands with more than 3 cards.        
+        """ 
+        if len(self.cards) < 3:
+            raise ValueError ('Hand must have at least 3 cards')  
+        self.rank_hist()
+        for val in self.ranks.values():
+            if val >= 3:
+                return True
+        return False      
+                       
+    def has_flush(self):
+        """Returns True if the hand has a flush, False otherwise.
+      
+        Note that this works correctly for hands with more than 5 cards.
+        """
+        self.suit_hist()
+        for val in self.suits.values():
+            if val >= 5:
+                return True
+        return False
         
 if __name__ == '__main__':
     # make a deck
@@ -80,7 +91,8 @@ if __name__ == '__main__':
         deck.move_cards(hand, 7)
         hand.sort()
         print hand
-        print "Hand has flush? %s" %hand.has_flush()
         print "Hand has pair? %s" %hand.has_pair()
         print "Hand has two pairs? %s" %hand.has_two_pair()
+        print "Hand has three of a kind? %s" %hand.has_three_of_a_kind()
+        print "Hand has flush? %s" %hand.has_flush()
         print ''
