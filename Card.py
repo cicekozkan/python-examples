@@ -6,8 +6,12 @@ Created on Sun Nov 16 14:11:08 2014
 """
 
 class Card(object):
-    """Represents a standard playing card"""
-    def __init__(self,suit=0,rank=2):
+    """Represents a standard playing card.
+    Attributes:
+      suit: integer 0-3
+      rank: integer 1-13
+    """
+    def __init__(self, suit=0, rank=2):
         self.suit=suit
         self.rank=rank
     suit_names = ['Clubs', 'Diamonds', 'Hearts', 'Spades']

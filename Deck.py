@@ -8,7 +8,10 @@ from Card import Card
 import random
 
 class Deck(object):
-    """Represents a deck of playing cards"""
+    """Represents a deck of playing cards.
+    Attributes:
+      cards: list of Card objects.
+    """
     def __init__(self):
         self.cards = []
         for suit in range(4):
@@ -20,10 +23,17 @@ class Deck(object):
         for card in self.cards:
             res.append(str(card))
         return '\n'.join(res)
-    def pop_card(self):
-        return self.cards.pop()
+    def pop_card(self, i=-1):
+        """Removes and returns a card from the deck.
+
+        i: index of the card to pop; by default, pops the last card.
+        """
+        return self.cards.pop(i)
     def add_card(self, card):
         self.cards.append(card)
+    def remove_card(self, card):
+        """Removes a card from the deck."""
+        self.cards.remove(card)
     def shuffle(self):
         random.shuffle(self.cards)
     def sort(self):
