@@ -20,6 +20,15 @@ class PokerHand(Hand):
         self.suits = {}
         for card in self.cards:
             self.suits[card.suit] = self.suits.get(card.suit, 0) + 1
+    
+    def rank_hist(self):
+        """Builds a histogram of the ranks that appear in the hand.
+
+        Stores the result in attribute ranks.
+        """      
+        self.ranks = {}
+        for card in self.cards:
+            self.ranks[card.rank] = self.ranks.get(card.rank, 0) + 1
 
     def has_flush(self):
         """Returns True if the hand has a flush, False otherwise.
@@ -31,8 +40,35 @@ class PokerHand(Hand):
             if val >= 5:
                 return True
         return False
-
-
+    
+    def has_pair(self):
+        """Returns True if the hand has a pair, False otherwise.
+        Note that this works correctly for hands with more than 2 cards.        
+        """
+        if len(self.cards) < 2:
+            raise ValueError ('Hand must have at least 2 cards')
+        self.rank_hist()
+        for val in self.ranks.values():
+            if val >= 2:
+                return True
+        return False
+    
+    def has_two_pair(self):
+        """Returns True if the hand has two pairs, False otherwise.
+        Note that this works correctly for hands with more than 4 cards.        
+        """    
+        if len(self.cards) < 4:
+            raise ValueError ('Hand must have at least 4 cards')
+        pair = 0
+        for val in self.ranks.values():
+            if val >= 4:
+                return True
+            if val >= 2:
+                pair += 1
+            if pair == 2:
+                return True
+        return False
+        
 if __name__ == '__main__':
     # make a deck
     deck = Deck()
@@ -44,5 +80,7 @@ if __name__ == '__main__':
         deck.move_cards(hand, 7)
         hand.sort()
         print hand
-        print hand.has_flush()
+        print "Hand has flush? %s" %hand.has_flush()
+        print "Hand has pair? %s" %hand.has_pair()
+        print "Hand has two pairs? %s" %hand.has_two_pair()
         print ''
