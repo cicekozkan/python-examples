@@ -74,10 +74,28 @@ class PokerHand(Hand):
         """Returns True if five cards with ranks in sequence, False otherwise.
         Note that this works correctly for hands with more than 5 cards.        
         """
+        num_in_seq = 0
         if len(self.cards) < 5:
             raise ValueError ('Hand must have at least 5 cards') 
-        
-                       
+        rank_list = []
+        for card in self.cards:
+            rank_list.append(card.rank)
+        rank_list.sort()    
+        for i in range(len(rank_list)-1):
+            # "ace is low" case
+            if rank_list[i] == (rank_list[i+1] - 1):
+                num_in_seq += 1
+            # "ace is high" case
+            elif rank_list[i] == 13 and rank_list[i+1] == 1:
+                num_in_seq += 1
+            else:
+                num_in_seq = 0
+       
+        if num_in_seq >= 4:
+            return True
+        else:
+            return False
+                                       
     def has_flush(self):
         """Returns True if the hand has a flush, False otherwise.
       
@@ -104,4 +122,5 @@ if __name__ == '__main__':
         print "Hand has two pairs? %s" %hand.has_two_pair()
         print "Hand has three of a kind? %s" %hand.has_three_of_a_kind()
         print "Hand has flush? %s" %hand.has_flush()
+        print "Hand has straight? %s" %hand.has_straight()
         print ''
