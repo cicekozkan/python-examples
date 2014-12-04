@@ -97,7 +97,7 @@ class PokerHand(Hand):
             return False
                                        
     def has_flush(self):
-        """Returns True if the hand has a flush, False otherwise.
+        """Returns True if the hand has five cards with the same suit, False otherwise.
       
         Note that this works correctly for hands with more than 5 cards.
         """
@@ -142,13 +142,46 @@ class PokerHand(Hand):
             if val >= 4:
                 return True
         return False
-        
+    
+    def has_straight_flush(self):
+        """Returns True if five cards in sequence and with the same suit, 
+        False otherwise.
+        Note that this works correctly for hands with more than 5 cards.        
+        """
+        if len(self.cards) < 5:
+            raise ValueError ('Hand must have at least 5 cards')
+        # first of all check that if the hand has flush or not
+        if self.has_flush():
+            # Hand has flush. Remove cars from the hand that has different
+            # suit and then check whether are they in sequence or not
+            # make sure adding removed cards back to the hand before
+            # returning
+            removed_cards = Hand()
+            cards_to_remove = []
+            num_removed_cards = 0
+            self.sort() # make sure hand is sorted
+            for card in self.cards:
+                if self.suits[card.suit] < 5:
+                    cards_to_remove.append(card)
+            for card in cards_to_remove:
+                self.remove_card(card)
+                removed_cards.add_card(card)
+                num_removed_cards += 1
+            if self.has_straight():
+                removed_cards.move_cards(self,num_removed_cards)
+                return True
+            else:
+                removed_cards.move_cards(self,num_removed_cards)
+                return False 
+        else:
+            return False
+     
 if __name__ == '__main__':
     # make a deck
     deck = Deck()
     deck.shuffle()
 
-    # deal the cards and classify the hands
+    #deal the cards and classify the hands
     for i in range(7):
         hand = PokerHand()
         deck.move_cards(hand, 7)
@@ -161,4 +194,6 @@ if __name__ == '__main__':
         print "Hand has straight? %s" %hand.has_straight()
         print "Hand has full house? %s" %hand.has_full_house()
         print "Hand has four of a kind? %s" %hand.has_four_of_a_kind()
+        print "Hand has straight flush? %s" %hand.has_straight_flush()
         print ''
+
