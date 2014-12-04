@@ -175,6 +175,38 @@ class PokerHand(Hand):
                 return False 
         else:
             return False
+    
+    def classify(self):
+        """figures out the highest-value classification for a hand
+        and sets the label attribute accordingly. For example, a 
+        7-card hand might contain a flush
+        and a pair; it should be labeled 'flush'."""
+        if self.has_straight_flush():
+            self.label = 'straight flush'
+            return
+        elif self.has_four_of_a_kind():
+            self.label = 'four of a kind'
+            return
+        elif self.has_full_house():
+            self.label = 'full house'
+            return
+        elif self.has_flush():
+            self.label = 'flush'
+            return
+        elif self.has_straight():
+            self.label = 'straight'
+            return
+        elif self.has_three_of_a_kind():
+            self.label = 'three of a kind'
+            return
+        elif self.has_two_pair():
+            self.label = 'two pair'
+            return
+        elif self.has_pair():
+            self.label = 'pair'
+            return
+        else:
+            self.label = 'Rest'            
      
 if __name__ == '__main__':
     # make a deck
@@ -195,5 +227,8 @@ if __name__ == '__main__':
         print "Hand has full house? %s" %hand.has_full_house()
         print "Hand has four of a kind? %s" %hand.has_four_of_a_kind()
         print "Hand has straight flush? %s" %hand.has_straight_flush()
+        hand.classify()
+        print 'Hand is %s' %hand.label
         print ''
+        
 
