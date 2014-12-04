@@ -131,6 +131,17 @@ class PokerHand(Hand):
         else:
             return False
         
+    def has_four_of_a_kind(self):
+        """Returns True if the hand has four cards with the same rank, False otherwise.
+        Note that this works correctly for hands with more than 4 cards.        
+        """
+        if len(self.cards) < 4:
+            raise ValueError ('Hand must have at least 4 cards') 
+        self.rank_hist()
+        for val in self.ranks.values():
+            if val >= 4:
+                return True
+        return False
         
 if __name__ == '__main__':
     # make a deck
@@ -149,4 +160,5 @@ if __name__ == '__main__':
         print "Hand has flush? %s" %hand.has_flush()
         print "Hand has straight? %s" %hand.has_straight()
         print "Hand has full house? %s" %hand.has_full_house()
+        print "Hand has four of a kind? %s" %hand.has_four_of_a_kind()
         print ''
