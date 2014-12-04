@@ -206,7 +206,7 @@ class PokerHand(Hand):
             self.label = 'pair'
             return
         else:
-            self.label = 'Rest' 
+            self.label = 'high card' 
             
 def hands_hist(num_decks=1):
     """Shuffles a number of decks of cards, divides it into hands, classifies the hands,
@@ -256,7 +256,13 @@ if __name__ == '__main__':
 #        hand.classify()
 #        print 'Hand is %s' %hand.label
 #        print ''
-
-    hist = hands_hist()
+    num_hands = 500000
+    hist = hands_hist(num_hands)
+    probabilities = {}
+    for key in hist:
+        probabilities[key] = (hist[key]/(num_hands*7.0))*100
+        print "%s -> %%%.4f"%(key, probabilities[key])
+       
+    
         
 
