@@ -206,29 +206,57 @@ class PokerHand(Hand):
             self.label = 'pair'
             return
         else:
-            self.label = 'Rest'            
+            self.label = 'Rest' 
+            
+def hands_hist(num_decks=1):
+    """Shuffles a number of decks of cards, divides it into hands, classifies the hands,
+    and counts the number of times various classifications appear.\n
+    Args:
+        num_decks (int, optional): Number of decks to repeat. Defaults to 1
+    Returns:
+        hist (dict): Hand-probability histogram. A dictionary whose keys are
+        hands and values are the probability of that hand
+    Raises:
+        ValueError: if num_decks is smaller than 1
+    """
+    if num_decks < 1:
+        raise ValueError('Number of decks should be graeter than 1')
+    hist = {}
+    for i in range(num_decks):
+        deck = Deck()
+        deck.shuffle()    
+        for j in range(7):
+            hand = PokerHand()
+            deck.move_cards(hand, 7)
+            hand.sort()
+            hand.classify()
+            hist[hand.label] = hist.get(hand.label,0) + 1
+    
+    return hist
      
 if __name__ == '__main__':
     # make a deck
-    deck = Deck()
-    deck.shuffle()
+#    deck = Deck()
+#    deck.shuffle()
+#
+#    #deal the cards and classify the hands
+#    for i in range(7):
+#        hand = PokerHand()
+#        deck.move_cards(hand, 7)
+#        hand.sort()
+#        print hand
+#        print "Hand has pair? %s" %hand.has_pair()
+#        print "Hand has two pairs? %s" %hand.has_two_pair()
+#        print "Hand has three of a kind? %s" %hand.has_three_of_a_kind()
+#        print "Hand has flush? %s" %hand.has_flush()
+#        print "Hand has straight? %s" %hand.has_straight()
+#        print "Hand has full house? %s" %hand.has_full_house()
+#        print "Hand has four of a kind? %s" %hand.has_four_of_a_kind()
+#        print "Hand has straight flush? %s" %hand.has_straight_flush()
+#        hand.classify()
+#        print 'Hand is %s' %hand.label
+#        print ''
 
-    #deal the cards and classify the hands
-    for i in range(7):
-        hand = PokerHand()
-        deck.move_cards(hand, 7)
-        hand.sort()
-        print hand
-        print "Hand has pair? %s" %hand.has_pair()
-        print "Hand has two pairs? %s" %hand.has_two_pair()
-        print "Hand has three of a kind? %s" %hand.has_three_of_a_kind()
-        print "Hand has flush? %s" %hand.has_flush()
-        print "Hand has straight? %s" %hand.has_straight()
-        print "Hand has full house? %s" %hand.has_full_house()
-        print "Hand has four of a kind? %s" %hand.has_four_of_a_kind()
-        print "Hand has straight flush? %s" %hand.has_straight_flush()
-        hand.classify()
-        print 'Hand is %s' %hand.label
-        print ''
+    hist = hands_hist()
         
 
