@@ -101,11 +101,36 @@ class PokerHand(Hand):
       
         Note that this works correctly for hands with more than 5 cards.
         """
+        if len(self.cards) < 5:
+            raise ValueError ('Hand must have at least 5 cards') 
+            
         self.suit_hist()
         for val in self.suits.values():
             if val >= 5:
                 return True
         return False
+    
+    def has_full_house(self):
+        """Returns True if the hand has a three cards with one rank, 
+        two cards with another, False otherwise.
+      
+        Note that this works correctly for hands with more than 5 cards.
+        """
+        has_two = False
+        has_three = False
+        if len(self.cards) < 5:
+            raise ValueError ('Hand must have at least 5 cards') 
+        self.rank_hist()
+        for val in self.ranks.values():
+            if val == 2:
+                has_two = True
+            elif val == 3:
+                has_three = True
+        if has_two and has_three:
+            return True
+        else:
+            return False
+        
         
 if __name__ == '__main__':
     # make a deck
@@ -123,4 +148,5 @@ if __name__ == '__main__':
         print "Hand has three of a kind? %s" %hand.has_three_of_a_kind()
         print "Hand has flush? %s" %hand.has_flush()
         print "Hand has straight? %s" %hand.has_straight()
+        print "Hand has full house? %s" %hand.has_full_house()
         print ''
