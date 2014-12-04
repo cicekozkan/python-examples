@@ -57,6 +57,7 @@ class PokerHand(Hand):
             if pair == 2:
                 return True
         return False
+        
     def has_three_of_a_kind(self):
         """Returns True if the hand has three cards with the same rank, False otherwise.
         Note that this works correctly for hands with more than 3 cards.        
@@ -67,7 +68,15 @@ class PokerHand(Hand):
         for val in self.ranks.values():
             if val >= 3:
                 return True
-        return False      
+        return False
+    
+    def has_straight(self):
+        """Returns True if five cards with ranks in sequence, False otherwise.
+        Note that this works correctly for hands with more than 5 cards.        
+        """
+        if len(self.cards) < 5:
+            raise ValueError ('Hand must have at least 5 cards') 
+        
                        
     def has_flush(self):
         """Returns True if the hand has a flush, False otherwise.

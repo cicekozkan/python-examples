@@ -23,7 +23,7 @@ class Card(object):
                              Card.suit_names[self.suit])
     def __cmp__(self, other):
         t1 = self.suit, self.rank
-        t2 = self.suit, self.rank
+        t2 = other.suit, other.rank
         return cmp(t1,t2)
         
 class Deck(object):
